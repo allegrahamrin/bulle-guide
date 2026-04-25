@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulle — Find Your Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Overpass+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --egg:#F4F1E1;--taupe:#AB8D73;--blush:#E2D0D4;--rose:#C98D9B;--mahogany:#260D0D;
+  --text:#260D0D;--tl:#F4F1E1;--tm:rgba(38,13,13,0.42);--tml:rgba(244,241,225,0.55);
+  --b:rgba(38,13,13,0.11);--bl:rgba(244,241,225,0.14);--br:rgba(201,141,155,0.45);
+  --ff:'Overpass',sans-serif;--ffm:'Overpass Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--egg);color:var(--text);font-family:var(--ff);font-weight:300;min-height:100vh;overflow-x:hidden}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.hero-left{background:var(--mahogany);display:flex;flex-direction:column;justify-content:center;padding:80px 64px;position:relative;overflow:hidden}
+.hero-left::before{content:'';position:absolute;top:-60px;right:-60px;width:340px;height:340px;border-radius:50%;border:1px solid rgba(201,141,155,0.18)}
+.hero-left::after{content:'';position:absolute;bottom:40px;left:-100px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(171,141,115,0.14)}
+.eyebrow{font-family:var(--ffm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);margin-bottom:36px}
+.hero-title{font-size:clamp(40px,5vw,66px);font-weight:200;line-height:1.05;color:var(--egg);margin-bottom:28px}
+.hero-title em{font-style:italic;color:var(--rose)}
+.hero-sub{font-size:16px;line-height:1.75;color:var(--tml);max-width:380px;margin-bottom:52px}
+.hero-cta{display:inline-block;padding:14px 36px;border:1px solid var(--rose);color:var(--rose);font-family:var(--ffm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .3s;text-decoration:none}
+.hero-cta:hover{background:var(--rose);color:var(--mahogany)}
+.hero-right{background:var(--blush);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 64px;border-left:1px solid rgba(38,13,13,.07)}
+.promise-list{list-style:none;display:flex;flex-direction:column;gap:36px;max-width:380px}
+.pi{display:flex;gap:22px;align-items:flex-start}
+.pn{font-family:var(--ffm);font-size:10px;color:var(--taupe);letter-spacing:.1em;padding-top:3px;flex-shrink:0}
+.pt strong{display:block;font-size:17px;font-weight:300;color:var(--mahogany);margin-bottom:5px}
+.pt span{font-size:13px;color:rgba(38,13,13,.55);line-height:1.65}
+.quiz-section{background:var(--egg);padding:100px 40px;max-width:880px;margin:0 auto;border-top:1px solid var(--b)}
+.slabel{font-family:var(--ffm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);margin-bottom:18px}
+.stitle{font-size:clamp(30px,4vw,46px);font-weight:200;color:var(--text);line-height:1.1;margin-bottom:16px}
+.stitle em{font-style:italic;color:var(--rose)}
+.sintro{font-size:15px;color:var(--tm);line-height:1.75;max-width:520px;margin-bottom:56px}
+.qprog{display:flex;gap:8px;margin-bottom:52px;align-items:center}
+.ps{width:32px;height:1px;background:rgba(38,13,13,.12);transition:background .3s}
+.ps.active{background:var(--taupe)}.ps.done{background:var(--rose)}
+.plabel{font-family:var(--ffm);font-size:10px;color:var(--tm);letter-spacing:.1em;margin-left:10px}
+.qblock{display:none}.qblock.active{display:block}
+.qtxt{font-size:clamp(19px,3vw,26px);font-weight:200;color:var(--text);margin-bottom:36px;line-height:1.35}
+.qtxt em{font-style:italic;color:var(--rose)}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px}
+.ocard{border:1px solid var(--b);padding:22px 24px;cursor:pointer;transition:all .2s;background:white;position:relative;overflow:hidden}
+.ocard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--rose);transition:width .2s}
+.ocard:hover{border-color:var(--br);background:#fdfaf8}
+.ocard:hover::before{width:2px}
+.ocard.selected{border-color:var(--rose);background:#fdfaf8}
+.ocard.selected::before{width:2px}
+.ocard.selected .otitle{color:var(--rose)}
+.otitle{font-size:15px;font-weight:300;color:var(--text);margin-bottom:5px;position:relative}
+.odesc{font-size:12px;color:var(--tm);line-height:1.55;position:relative}
+.qnav{display:flex;justify-content:space-between;align-items:center}
+.bbk{font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--tm);background:none;border:none;cursor:pointer;padding:0;transition:color .2s}
+.bbk:hover{color:var(--text)}
+.bnx{font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--rose);background:none;border:1px solid var(--rose);padding:13px 32px;cursor:pointer;transition:all .2s}
+.bnx:hover{background:var(--rose);color:var(--egg)}
+.bnx:disabled{opacity:.25;cursor:not-allowed}
+.results-section{display:none;padding:0 0 100px}
+.rhead{background:var(--mahogany);padding:72px 40px;text-align:center;margin-bottom:64px;border-bottom:1px solid var(--bl)}
+.reyebrow{font-family:var(--ffm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);margin-bottom:20px}
+.rtitle{font-size:clamp(26px,4vw,44px);font-weight:200;color:var(--egg);line-height:1.1;margin-bottom:12px}
+.rtitle em{font-style:italic;color:var(--rose)}
+.rsub{font-size:13px;color:var(--tml);font-family:var(--ffm);letter-spacing:.05em}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;max-width:900px;margin:0 auto 72px;padding:0 40px;background:var(--b)}
+.gcard{background:var(--egg);padding:36px 30px;transition:background .2s}
+.gcard:hover{background:var(--blush)}
+.gmatch{font-family:var(--ffm);font-size:10px;color:var(--taupe);letter-spacing:.15em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.mbar{flex:1;height:1px;background:rgba(38,13,13,.1);position:relative}
+.mfill{position:absolute;top:0;left:0;height:100%;background:var(--taupe)}
+.gtitle{font-size:20px;font-weight:300;color:var(--text);line-height:1.2;margin-bottom:10px}
+.gdesc{font-size:13px;color:var(--tm);line-height:1.65;margin-bottom:20px}
+.gtags{display:flex;flex-wrap:wrap;gap:6px}
+.gtag{font-family:var(--ffm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--b);color:var(--tm)}
+.ecap{max-width:560px;margin:0 auto;padding:0 40px;text-align:center}
+.ctitle{font-size:clamp(22px,3vw,34px);font-weight:200;color:var(--text);line-height:1.2;margin-bottom:12px}
+.ctitle em{font-style:italic;color:var(--rose)}
+.csub{font-size:14px;color:var(--tm);line-height:1.7;margin-bottom:12px}
+.mteaser{display:inline-flex;align-items:center;gap:10px;font-family:var(--ffm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);border:1px solid rgba(171,141,115,.3);padding:9px 18px;margin-bottom:36px}
+.mdot{width:5px;height:5px;border-radius:50%;background:var(--taupe);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.eform{display:flex;border:1px solid var(--b);margin-bottom:16px;background:white}
+.eform input{flex:1;border:none;padding:16px 20px;font-family:var(--ff);font-size:14px;color:var(--text);background:transparent;outline:none}
+.eform input::placeholder{color:var(--tm);font-style:italic}
+.eform button{padding:16px 28px;background:var(--rose);color:var(--egg);border:none;font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .2s}
+.eform button:hover{background:var(--mahogany)}
+.cnote{font-size:11px;color:var(--tm);font-style:italic;font-family:var(--ffm);letter-spacing:.04em}
+.smsg{display:none;text-align:center;padding:48px 40px}
+.sicon{width:52px;height:52px;border-radius:50%;border:1px solid var(--taupe);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:20px;color:var(--taupe)}
+.stitle2{font-size:28px;font-weight:200;color:var(--text);margin-bottom:12px}
+.ssub{font-size:14px;color:var(--tm);line-height:1.75;max-width:420px;margin:0 auto 28px}
+.smap{display:inline-flex;align-items:center;gap:10px;font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--taupe);border:1px solid rgba(171,141,115,.3);padding:13px 24px;text-decoration:none;transition:all .2s}
+.smap:hover{background:var(--taupe);color:var(--egg)}
+@media(max-width:720px){
+  .hero{grid-template-columns:1fr}
+  .hero-left{padding:64px 32px;min-height:60vh}
+  .hero-right{padding:60px 32px;border-left:none;border-top:1px solid rgba(38,13,13,.07)}
+  .ogrid{grid-template-columns:1fr}
+  .quiz-section{padding:64px 24px}
+  .ggrid{padding:0 24px}
+}
+.fade-in{animation:fi .5s ease forwards}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">Wine coaching · Curated selection</p>
+    <h1 class="hero-title">The wine you<br>didn't know<br>you were<br><em>looking for.</em></h1>
+    <p class="hero-sub">Not another endless list. Not generic advice. The right guides for your palate — handpicked, not generated.</p>
+    <a href="#quiz" class="hero-cta">Find your guides</a>
+  </div>
+  <div class="hero-right">
+    <ul class="promise-list">
+      <li class="pi"><span class="pn">01</span><div class="pt"><strong>Editorial selection</strong><span>Every guide is chosen with intention. Stories, producers, territories — nothing algorithmic.</span></div></li>
+      <li class="pi"><span class="pn">02</span><div class="pt"><strong>Your profile, your guides</strong><span>Five questions to understand where you are in your wine journey — and where you want to go.</span></div></li>
+      <li class="pi"><span class="pn">03</span><div class="pt"><strong>The insider map</strong><span>Subscribe and unlock the curated map of cellars, producers and addresses worth knowing.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="quiz-section" id="quiz">
+  <p class="slabel">Your profile</p>
+  <h2 class="stitle">Five questions,<br><em>the right guides.</em></h2>
+  <p class="sintro">No wrong answers. I want to understand where you are with wine — and with food — so I can point you to what actually matters for you right now.</p>
+
+  <div class="qprog" id="qprog">
+    <div class="ps active" id="ps0"></div>
+    <div class="ps" id="ps1"></div>
+    <div class="ps" id="ps2"></div>
+    <div class="ps" id="ps3"></div>
+    <div class="ps" id="ps4"></div>
+    <span class="plabel" id="plabel">Question 1 of 5</span>
+  </div>
+
+  <!-- Q1: Wine level -->
+  <div class="qblock active" id="q0">
+    <p class="qtxt">Where would you honestly<br>place yourself with <em>wine?</em></p>
+    <div class="ogrid">
+      <div class="ocard" data-q="0" data-v="curious"><p class="otitle">Genuinely curious</p><p class="odesc">I enjoy it but don't really know what I'm drinking. I'd like to change that.</p></div>
+      <div class="ocard" data-q="0" data-v="casual"><p class="otitle">Casual enthusiast</p><p class="odesc">I have my favourites but I'm ready to be surprised and challenged.</p></div>
+      <div class="ocard" data-q="0" data-v="informed"><p class="otitle">Informed drinker</p><p class="odesc">I know the basics well. I'm after specific territories, producers, depth.</p></div>
+      <div class="ocard" data-q="0" data-v="expert"><p class="otitle">Expert / professional</p><p class="odesc">Serious background. I'm looking for editorial perspective and niche discoveries.</p></div>
+    </div>
+    <div class="qnav"><span></span><button class="bnx" id="next0" disabled onclick="goNext(0)">Next →</button></div>
+  </div>
+
+  <!-- Q2: Relationship with wine (was Q5) -->
+  <div class="qblock" id="q1">
+    <p class="qtxt">And more broadly — what's your<br><em>relationship with wine right now?</em></p>
+    <div class="ogrid">
+      <div class="ocard" data-q="1" data-v="everyday"><p class="otitle">An everyday pleasure</p><p class="odesc">Dinner at home, a gift, a quiet glass. Wine as part of how I live, not a performance.</p></div>
+      <div class="ocard" data-q="1" data-v="special"><p class="otitle">For special occasions</p><p class="odesc">Restaurants, anniversaries, important guests. I want to make the right choice count.</p></div>
+      <div class="ocard" data-q="1" data-v="learning"><p class="otitle">Actively learning</p><p class="odesc">I'm studying wine — formally or on my own. I want to go deeper, faster.</p></div>
+      <div class="ocard" data-q="1" data-v="travel"><p class="otitle">Travel & discovery</p><p class="odesc">I love visiting producers, exploring regions, living wine as landscape and culture.</p></div>
+    </div>
+    <div class="qnav"><button class="bbk" onclick="goBack(1)">← Back</button><button class="bnx" id="next1" disabled onclick="goNext(1)">Next →</button></div>
+  </div>
+
+  <!-- Q3: Food (was Q3) -->
+  <div class="qblock" id="q2">
+    <p class="qtxt">How do you relate<br>to <em>food?</em></p>
+    <div class="ogrid">
+      <div class="ocard" data-q="2" data-v="traditional"><p class="otitle">Rooted in tradition</p><p class="odesc">Classic dishes, regional cooking, recipes passed down. Comfort and identity on the plate.</p></div>
+      <div class="ocard" data-q="2" data-v="curious-food"><p class="otitle">Curious but grounded</p><p class="odesc">I appreciate the classics but I'm open to new combinations and unexpected flavours.</p></div>
+      <div class="ocard" data-q="2" data-v="innovative"><p class="otitle">Adventurous & experimental</p><p class="odesc">I seek out new cuisines, unusual ingredients, chefs who push boundaries.</p></div>
+      <div class="ocard" data-q="2" data-v="minimalist"><p class="otitle">Minimal & product-focused</p><p class="odesc">Few ingredients, exceptional quality. The product speaks, the technique stays invisible.</p></div>
+    </div>
+    <div class="qnav"><button class="bbk" onclick="goBack(2)">← Back</button><button class="bnx" id="next2" disabled onclick="goNext(2)">Next →</button></div>
+  </div>
+
+  <!-- Q4: What you look for (was Q2) -->
+  <div class="qblock" id="q3">
+    <p class="qtxt">What are you <em>primarily</em><br>looking for in a food & wine guide?</p>
+    <div class="ogrid">
+      <div class="ocard" data-q="3" data-v="discovery"><p class="otitle">Discovery</p><p class="odesc">I want to find wines I'd never have chosen on my own.</p></div>
+      <div class="ocard" data-q="3" data-v="pairing"><p class="otitle">Food pairing</p><p class="odesc">I want to know what to drink with what I eat.</p></div>
+      <div class="ocard" data-q="3" data-v="tasting"><p class="otitle">Tasting & reading</p><p class="odesc">I want to develop a genuine sensory vocabulary — no sommelier jargon.</p></div>
+      <div class="ocard" data-q="3" data-v="territory"><p class="otitle">Territory & stories</p><p class="odesc">I want to understand the places, people and obsessions behind the wine.</p></div>
+    </div>
+    <div class="qnav"><button class="bbk" onclick="goBack(3)">← Back</button><button class="bnx" id="next3" disabled onclick="goNext(3)">Next →</button></div>
+  </div>
+
+  <!-- Q5: Moment (was Q4) -->
+  <div class="qblock" id="q4">
+    <p class="qtxt">What kind of moment are you<br><em>looking for a guide for?</em></p>
+    <div class="ogrid">
+      <div class="ocard" data-q="4" data-v="date"><p class="otitle">First date</p><p class="odesc">Intimate, a little charged, memorable. The wine should do some of the talking.</p></div>
+      <div class="ocard" data-q="4" data-v="aperitivo"><p class="otitle">Aperitivo with friends</p><p class="odesc">Relaxed, convivial, unpretentious. Something everyone enjoys without overthinking.</p></div>
+      <div class="ocard" data-q="4" data-v="cellar"><p class="otitle">Cellar experience</p><p class="odesc">I'm visiting a producer or region. I want to arrive knowing something real — and discover the addresses worth adding to my list.</p></div>
+      <div class="ocard" data-q="4" data-v="city"><p class="otitle">City wine experience</p><p class="odesc">Wine bars, natural wine shops, the new urban scene. I want the right addresses.</p></div>
+    </div>
+    <div class="qnav"><button class="bbk" onclick="goBack(4)">← Back</button><button class="bnx" id="next4" disabled onclick="showResults()">Find my guides →</button></div>
+  </div>
+</section>
+
+<section class="results-section" id="resultsSection">
+  <div class="rhead">
+    <p class="reyebrow">Your profile</p>
+    <h2 class="rtitle" id="rtitle">Guides curated <em>for you</em></h2>
+    <p class="rsub" id="rsub">Based on your answers</p>
+  </div>
+
+  <div class="ggrid" id="ggrid"></div>
+
+  <div class="ecap" id="ecap">
+    <h3 class="ctitle">Receive your guides<br><em>in your inbox</em></h3>
+    <p class="csub">Downloadable PDFs, updated every time I add new selections. Yours to keep.</p>
+    <div class="mteaser"><span class="mdot"></span>+ Access to the curated cellar map</div>
+    <div class="eform"><input type="email" id="emailInput" placeholder="your email…"><button onclick="submitEmail()">Send my guides</button></div>
+    <p class="cnote">No noise. Unsubscribe whenever you like.</p>
+  </div>
+
+  <div class="smsg" id="smsg">
+    <div class="sicon">✦</div>
+    <h3 class="stitle2">Done.</h3>
+    <p class="ssub" id="ssub">Your guides are on their way. Check your inbox — along with the PDFs you'll find something extra.</p>
+    <a class="smap" id="mapLink" href="#" target="_blank"><span class="mdot"></span>Open the cellar map</a>
+  </div>
+</section>
+
+<script>
+const answers = {};
+const TQ = 5;
+
+const DB = [
+  {id:"foundations",title:"Wine, from the beginning",desc:"For anyone who wants to genuinely understand where it all starts. No jargon, a lot of story.",tags:["beginners","narrative","discovery"],
+   match:{curious:98,casual:72,informed:40,expert:10},focus:["discovery","tasting"],food:["traditional","curious-food"],moment:["date","aperitivo"],occasion:["everyday","learning"]},
+  {id:"italian-reds",title:"The Italian reds you don't know yet",desc:"From forgotten native grapes to small appellations that demand attention. A map of what's been overlooked.",tags:["reds","italy","discovery","territory"],
+   match:{curious:60,casual:90,informed:88,expert:75},focus:["discovery","territory"],food:["curious-food","innovative","minimalist"],moment:["cellar","city","date"],occasion:["everyday","travel","special"]},
+  {id:"pairing",title:"Pairing without rules",desc:"A narrative approach to matching food and wine. Why some combinations work, and others just don't.",tags:["pairing","food","practical"],
+   match:{curious:75,casual:90,informed:80,expert:60},focus:["pairing"],food:["traditional","curious-food","innovative"],moment:["date","aperitivo"],occasion:["everyday","special"]},
+  {id:"tasting",title:"Reading wine in the glass",desc:"How to build an authentic sensory vocabulary. With practical exercises and without sommelier theatre.",tags:["tasting","sensory","technique"],
+   match:{curious:55,casual:82,informed:95,expert:70},focus:["tasting"],food:["minimalist","curious-food"],moment:["cellar","city"],occasion:["learning","everyday"]},
+  {id:"territories",title:"Burgundy, Barolo and beyond",desc:"The world's great wine territories told as places to inhabit, not just bottles to drink.",tags:["territory","burgundy","barolo","grand cru"],
+   match:{curious:28,casual:62,informed:92,expert:88},focus:["territory"],food:["minimalist","innovative"],moment:["cellar","date"],occasion:["travel","special","learning"]},
+  {id:"natural",title:"Natural wine: a practical guide",desc:"What it actually means, how to recognise it, what to expect in the glass. Without ideology.",tags:["natural","artisan","contemporary"],
+   match:{curious:50,casual:85,informed:78,expert:65},focus:["discovery","territory"],food:["innovative","curious-food"],moment:["city","aperitivo"],occasion:["everyday","travel"]},
+  {id:"urban",title:"The new urban wine scene",desc:"Wine bars, natural wine shops, the addresses rewriting how we drink in the city. A curated insider guide.",tags:["city","wine bars","contemporary","addresses"],
+   match:{curious:60,casual:88,informed:82,expert:70},focus:["discovery","territory"],food:["innovative","minimalist"],moment:["city","aperitivo","date"],occasion:["everyday","special"]},
+  {id:"cellar-visits",title:"How to visit a cellar",desc:"What to look for, what to ask, which producers share addresses worth knowing. A guide to making wine travel meaningful.",tags:["cellar","producers","travel","addresses"],
+   match:{curious:55,casual:80,informed:90,expert:82},focus:["territory","discovery"],food:["minimalist","curious-food"],moment:["cellar"],occasion:["travel","learning"]}
+];
+
+function selectOpt(el) {
+  const q=el.dataset.q, v=el.dataset.v;
+  document.querySelectorAll('[data-q="'+q+'"]').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[q]=v;
+  document.getElementById('next'+q).disabled=false;
+}
+document.querySelectorAll('.ocard').forEach(c=>c.addEventListener('click',()=>selectOpt(c)));
+
+function updateProg(step) {
+  for(let i=0;i<TQ;i++){
+    const el=document.getElementById('ps'+i);
+    el.classList.remove('active','done');
+    if(i<step) el.classList.add('done');
+    else if(i===step) el.classList.add('active');
+  }
+  document.getElementById('plabel').textContent='Question '+(step+1)+' of '+TQ;
+}
+
+function goNext(cur) {
+  document.getElementById('q'+cur).classList.remove('active');
+  document.getElementById('q'+(cur+1)).classList.add('active','fade-in');
+  updateProg(cur+1);
+}
+
+function goBack(cur) {
+  document.getElementById('q'+cur).classList.remove('active');
+  document.getElementById('q'+(cur-1)).classList.add('active');
+  updateProg(cur-1);
+}
+
+function score(g) {
+  const level=answers[0]||'casual', occ=answers[1]||'everyday',
+        food=answers[2]||'curious-food', focus=answers[3]||'discovery', moment=answers[4]||'aperitivo';
+  let s=g.match[level]||50;
+  if(g.focus.includes(focus))   s=Math.min(100,s+12);
+  if(g.food&&g.food.includes(food))   s=Math.min(100,s+8);
+  if(g.moment&&g.moment.includes(moment)) s=Math.min(100,s+10);
+  if(g.occasion.includes(occ))  s=Math.min(100,s+8);
+  return s;
+}
+
+function showResults() {
+  document.querySelector('.quiz-section').style.display='none';
+  const rs=document.getElementById('resultsSection');
+  rs.style.display='block'; rs.classList.add('fade-in');
+  const ll={curious:'Genuinely curious',casual:'Casual enthusiast',informed:'Informed drinker',expert:'Expert'};
+  const fl={discovery:'discovery',pairing:'food pairing',tasting:'tasting',territory:'territory & stories'};
+  document.getElementById('rsub').textContent='Profile: '+(ll[answers[0]]||'')+' · Focus on '+(fl[answers[3]]||'');
+  const top=DB.map(g=>({...g,score:score(g)})).sort((a,b)=>b.score-a.score).slice(0,3);
+  document.getElementById('ggrid').innerHTML=top.map((g,i)=>`
+    <div class="gcard fade-in" style="animation-delay:${i*.1}s">
+      <div class="gmatch"><span>${g.score}% match</span><div class="mbar"><div class="mfill" style="width:${g.score}%"></div></div></div>
+      <h3 class="gtitle">${g.title}</h3>
+      <p class="gdesc">${g.desc}</p>
+      <div class="gtags">${g.tags.map(t=>'<span class="gtag">'+t+'</span>').join('')}</div>
+    </div>`).join('');
+  rs.scrollIntoView({behavior:'smooth'});
+}
+
+function submitEmail() {
+  const email=document.getElementById('emailInput').value.trim();
+  if(!email||!email.includes('@')){document.getElementById('emailInput').style.outline='1px solid #C98D9B';return;}
+  document.getElementById('ecap').style.display='none';
+  const s=document.getElementById('smsg'); s.style.display='block'; s.classList.add('fade-in');
+  document.getElementById('mapLink').href='https://www.google.com/maps/d/YOUR_MAP_ID';
+  const msgs={
+    curious:"Your beginner's guides are on their way. You'll also find the cellar map — a perfect place to start.",
+    casual:"Your guides are incoming. In the same email, access to the curated producer map.",
+    informed:"Your guides are en route — including the map with some lesser-known addresses.",
+    expert:"On their way. Includes the map with the more niche, off-the-radar selections."
+  };
+  document.getElementById('ssub').textContent=msgs[answers[0]]||msgs.casual;
+  setTimeout(() => { window.location.href = 'reader.html'; }, 2000);
+}
+</script>
+</body>
+</html>
