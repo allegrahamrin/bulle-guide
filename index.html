@@ -46,12 +46,14 @@ nav {
   position: sticky; top: 0; z-index: 100;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  height: 52px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 0;
 }
-.nav-brand { font-family: var(--ff-head); font-size: 17px; color: var(--ink); letter-spacing: -0.01em; }
-.nav-right { font-family: var(--ff-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); }
+.nav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 0 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-brand { font-family: var(--ff-head); font-size: 20px; letter-spacing: 0.06em; color: var(--ink); text-decoration: none; text-transform: uppercase; }
+.nav-right { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; pointer-events: none; cursor: default; }
 
 /* HERO */
 .hero {
@@ -255,8 +257,10 @@ footer { background: var(--mahogany); padding: 32px 40px; display: flex; justify
 <body>
 
 <nav>
-  <span class="nav-brand">Bulle</span>
-  <span class="nav-right">Wine · Food · Territory</span>
+  <div class="nav-inner">
+    <span class="nav-brand">Bulle</span>
+    <span class="nav-right">Wine · Food · Territory</span>
+  </div>
 </nav>
 
 <section class="hero">
