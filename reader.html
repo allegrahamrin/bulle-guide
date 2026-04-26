@@ -4,101 +4,137 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bulle — Your Guides</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Overpass+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --egg:#F4F1E1;--taupe:#AB8D73;--blush:#E2D0D4;--rose:#C98D9B;--mahogany:#260D0D;
-  --tm:rgba(38,13,13,0.42);--b:rgba(38,13,13,0.1);--br:rgba(201,141,155,0.35);
-  --ff:'Overpass',sans-serif;--ffm:'Overpass Mono',monospace;
+@font-face {
+  font-family: 'ApfelFett';
+  src: url('https://raw.githubusercontent.com/allegrahamrin/fonts-bulle/main/ApfelGrotezk-Fett.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
 }
-html{scroll-behavior:smooth}
-body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weight:300;min-height:100vh}
+@font-face {
+  font-family: 'ApfelMittel';
+  src: url('https://raw.githubusercontent.com/allegrahamrin/fonts-bulle/main/ApfelGrotezk-Mittel.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Absans';
+  src: url('https://raw.githubusercontent.com/allegrahamrin/fonts-bulle/main/Absans-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
 
-/* TOP BAR */
-.topbar{background:var(--mahogany);padding:0 40px;height:48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topbar-brand{font-family:var(--ffm);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
-.topbar-right{font-family:var(--ffm);font-size:10px;color:rgba(244,241,225,0.4);letter-spacing:.1em}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #FAF8F3;
+  --surface: #F2EFE7;
+  --ink: #1A1A18;
+  --ink-muted: rgba(26,26,24,0.45);
+  --rose: #C98D9B;
+  --taupe: #AB8D73;
+  --blush: #E8DADA;
+  --mahogany: #260D0D;
+  --border: rgba(26,26,24,0.1);
+  --border-rose: rgba(201,141,155,0.4);
+  --ff-head: 'ApfelFett', Georgia, serif;
+  --ff-mid: 'ApfelMittel', system-ui, sans-serif;
+  --ff-body: 'Absans', system-ui, sans-serif;
+  --ff-mono: 'SFMono-Regular', 'Consolas', monospace;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:15px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+.topbar{background:var(--mahogany);padding:0 40px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{font-family:var(--ff-head);font-size:16px;color:rgba(250,248,243,0.9);letter-spacing:-0.01em}
+.topbar-right{font-family:var(--ff-mono);font-size:10px;color:rgba(250,248,243,0.35);letter-spacing:.12em;text-transform:uppercase}
 
 /* HERO */
-.reader-hero{padding:64px 40px 48px;max-width:860px;margin:0 auto;border-bottom:1px solid var(--b)}
-.hero-label{font-family:var(--ffm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);margin-bottom:20px}
-.hero-title{font-size:clamp(28px,4vw,44px);font-weight:200;line-height:1.1;margin-bottom:12px}
+.reader-hero{padding:64px 40px 48px;max-width:880px;margin:0 auto;border-bottom:1px solid var(--border)}
+.hero-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:20px}
+.hero-title{font-family:var(--ff-head);font-size:clamp(28px,4vw,44px);letter-spacing:-0.02em;line-height:1.05;margin-bottom:12px}
 .hero-title em{font-style:italic;color:var(--rose)}
-.hero-sub{font-size:15px;color:var(--tm);line-height:1.7;max-width:520px}
+.hero-sub{font-size:15px;color:var(--ink-muted);line-height:1.7;max-width:520px}
 
-/* NAV PILLS */
-.guide-nav{padding:0 40px;max-width:860px;margin:0 auto;display:flex;gap:8px;padding-top:32px;padding-bottom:0;flex-wrap:wrap}
-.gnav-btn{font-family:var(--ffm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--b);background:transparent;color:var(--tm);cursor:pointer;transition:all .2s}
-.gnav-btn:hover{border-color:var(--br);color:var(--mahogany)}
-.gnav-btn.active{border-color:var(--rose);color:var(--rose);background:rgba(201,141,155,0.06)}
+/* GUIDE NAV */
+.guide-nav{max-width:880px;margin:0 auto;padding:32px 40px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.gnav-btn{font-family:var(--ff-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:9px 18px;border:1px solid var(--border);background:transparent;color:var(--ink-muted);cursor:pointer;transition:all .18s;margin-bottom:-1px}
+.gnav-btn:hover{border-color:var(--border-rose);color:var(--ink)}
+.gnav-btn.active{border-color:var(--rose);color:var(--rose);background:rgba(201,141,155,0.05);border-bottom-color:var(--bg)}
 
-/* GUIDE PANELS */
-.guides-wrap{max-width:860px;margin:0 auto;padding:0 40px 80px}
-
-.guide-panel{display:none;padding-top:48px}
+/* PANELS */
+.guides-wrap{max-width:880px;margin:0 auto;padding:0 40px 100px}
+.guide-panel{display:none;padding-top:52px}
 .guide-panel.active{display:block}
 
 /* GUIDE HEADER */
-.guide-header{margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--b)}
-.guide-eyebrow{font-family:var(--ffm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:16px}
-.guide-title{font-size:clamp(24px,3.5vw,38px);font-weight:200;line-height:1.1;margin-bottom:10px}
+.guide-header{margin-bottom:48px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+.guide-eyebrow{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:16px}
+.guide-title{font-family:var(--ff-head);font-size:clamp(24px,3.5vw,38px);letter-spacing:-0.02em;line-height:1.05;margin-bottom:10px}
 .guide-title em{font-style:italic;color:var(--rose)}
-.guide-intro{font-size:14px;color:var(--tm);line-height:1.75;max-width:560px;margin-bottom:20px}
+.guide-intro{font-size:14px;color:var(--ink-muted);line-height:1.75;max-width:560px;margin-bottom:20px}
 .guide-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
-.gtag{font-family:var(--ffm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--b);color:var(--tm)}
-.pdf-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:11px 24px;border:1px solid var(--taupe);color:var(--taupe);text-decoration:none;transition:all .2s}
-.pdf-btn:hover{background:var(--taupe);color:var(--egg)}
+.gtag{font-family:var(--ff-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--border);color:var(--ink-muted)}
+.pdf-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:11px 22px;border:1px solid var(--taupe);color:var(--taupe);text-decoration:none;transition:all .2s}
+.pdf-btn:hover{background:var(--taupe);color:var(--bg)}
 .pdf-btn svg{width:13px;height:13px;flex-shrink:0}
 
 /* PLACE CARDS */
-.places-list{display:flex;flex-direction:column;gap:0}
-.place{padding:32px 0;border-bottom:1px solid var(--b)}
+.places-list{display:flex;flex-direction:column}
+.place{padding:36px 0;border-bottom:1px solid var(--border)}
 .place:last-child{border-bottom:none}
-.place-top{display:grid;grid-template-columns:32px 1fr;gap:16px;margin-bottom:16px}
-.place-num{font-family:var(--ffm);font-size:10px;color:var(--rose);padding-top:4px}
-.place-name{font-size:22px;font-weight:300;color:var(--mahogany);margin-bottom:3px}
-.place-zone{font-family:var(--ffm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe)}
-.place-divider{height:1px;background:var(--blush);margin:16px 0}
-.place-tagline{font-size:14px;font-style:italic;color:var(--rose);line-height:1.5;margin-bottom:14px}
-.place-body{font-size:13px;color:var(--mahogany);line-height:1.75;margin-bottom:16px}
-.place-why{background:rgba(201,141,155,0.08);border-left:2px solid var(--rose);padding:10px 14px;margin-bottom:16px}
-.why-label{font-family:var(--ffm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin-bottom:4px}
-.why-text{font-size:12px;font-style:italic;color:rgba(38,13,13,0.6);line-height:1.5}
-.place-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:#F9F6EE;padding:12px 16px;border-top:1px solid var(--blush);border-bottom:1px solid var(--blush)}
-.meta-col{}
-.meta-label{font-family:var(--ffm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:3px}
-.meta-val{font-size:12px;color:var(--mahogany);line-height:1.4}
+.place-top{display:grid;grid-template-columns:36px 1fr;gap:16px;margin-bottom:18px}
+.place-num{font-family:var(--ff-mono);font-size:10px;color:var(--rose);padding-top:5px}
+.place-name{font-family:var(--ff-head);font-size:22px;letter-spacing:-0.01em;color:var(--ink);margin-bottom:3px}
+.place-zone{font-family:var(--ff-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe)}
+.place-divider{height:1px;background:var(--blush);margin:18px 0}
+.place-tagline{font-family:var(--ff-mid);font-size:14px;color:var(--rose);line-height:1.5;margin-bottom:14px}
+.place-body{font-size:13px;color:var(--ink);line-height:1.8;margin-bottom:18px}
+.place-why{background:rgba(201,141,155,0.07);border-left:2px solid var(--rose);padding:10px 14px;margin-bottom:18px}
+.why-label{font-family:var(--ff-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin-bottom:4px}
+.why-text{font-size:12px;color:rgba(26,26,24,0.55);line-height:1.55;font-family:var(--ff-mid)}
+.place-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:var(--surface);padding:14px 16px;border-top:1px solid var(--blush);border-bottom:1px solid var(--blush)}
+.meta-label{font-family:var(--ff-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:4px}
+.meta-val{font-size:12px;color:var(--ink);line-height:1.45;font-family:var(--ff-body)}
+
+/* NATURAL WINE */
+.nw-section{margin-bottom:40px}
+.nw-label{font-family:var(--ff-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--taupe);margin-bottom:8px}
+.nw-title{font-family:var(--ff-head);font-size:20px;letter-spacing:-0.01em;color:var(--ink);margin-bottom:12px}
+.nw-body{font-size:13px;color:var(--ink);line-height:1.8}
+.nw-divider{height:1px;background:var(--blush);margin:32px 0}
+.producers-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.prod-card{background:white;border:1px solid var(--border);padding:16px 18px}
+.prod-name{font-family:var(--ff-head);font-size:14px;color:var(--ink);margin-bottom:5px}
+.prod-note{font-size:12px;color:var(--ink-muted);line-height:1.55}
 
 /* CLOSING */
-.guide-closing{padding:32px 0;font-size:15px;font-style:italic;color:var(--taupe);line-height:1.7}
+.guide-closing{padding:32px 0;font-family:var(--ff-mid);font-size:15px;color:var(--taupe);line-height:1.7}
 
-/* NATURAL WINE — sezioni narrative */
-.nw-section{margin-bottom:36px}
-.nw-section-label{font-family:var(--ffm);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--taupe);margin-bottom:8px}
-.nw-section-title{font-size:20px;font-weight:300;color:var(--mahogany);margin-bottom:12px}
-.nw-section-body{font-size:13px;color:var(--mahogany);line-height:1.75;margin-bottom:0}
-.nw-divider{height:1px;background:var(--blush);margin:28px 0}
-.producers-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
-.prod-card{background:white;border:1px solid var(--b);padding:16px 18px}
-.prod-name{font-size:14px;font-weight:400;color:var(--mahogany);margin-bottom:5px}
-.prod-note{font-size:12px;color:var(--tm);line-height:1.5}
+/* COMING SOON */
+.coming-soon{padding:64px 0;text-align:center;border-top:1px solid var(--border)}
+.cs-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:12px}
+.cs-text{font-size:15px;color:var(--ink-muted);max-width:420px;margin:0 auto;line-height:1.7}
+
+/* FOOTER */
+footer{background:var(--mahogany);padding:28px 40px;display:flex;justify-content:space-between;align-items:center}
+.foot-brand{font-family:var(--ff-head);font-size:15px;color:rgba(250,248,243,0.6)}
+.foot-right{font-family:var(--ff-mono);font-size:10px;color:rgba(250,248,243,0.3);letter-spacing:.1em;text-transform:uppercase}
 
 @media(max-width:640px){
   .topbar,.reader-hero,.guide-nav,.guides-wrap{padding-left:24px;padding-right:24px}
   .place-meta{grid-template-columns:1fr}
   .producers-grid{grid-template-columns:1fr}
-  .guide-nav{padding-top:24px}
+  footer{flex-direction:column;gap:8px;text-align:center}
 }
-.fade-up{animation:fu .4s ease forwards;opacity:0}
+
+.fade-up{animation:fu .4s ease forwards}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <span class="topbar-brand">Bulle · Your guides</span>
+  <span class="topbar-brand">Bulle</span>
   <span class="topbar-right">Milan city experience</span>
 </nav>
 
@@ -109,14 +145,14 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
 </div>
 
 <div class="guide-nav">
-  <button class="gnav-btn active" onclick="showGuide('g1')">01 · Wine bar guide</button>
-  <button class="gnav-btn" onclick="showGuide('g2')">02 · The underdogs</button>
-  <button class="gnav-btn" onclick="showGuide('g3')">03 · Natural wine</button>
+  <button class="gnav-btn active" onclick="showGuide('g1',this)">01 · Wine bar guide</button>
+  <button class="gnav-btn" onclick="showGuide('g2',this)">02 · The underdogs</button>
+  <button class="gnav-btn" onclick="showGuide('g3',this)">03 · Natural wine</button>
 </div>
 
 <div class="guides-wrap">
 
-  <!-- GUIDE 01: WINE BAR -->
+  <!-- GUIDE 01 -->
   <div class="guide-panel active" id="g1">
     <div class="guide-header fade-up">
       <p class="guide-eyebrow">Wine bar guide · Milan</p>
@@ -127,7 +163,7 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <span class="gtag">milano</span>
         <span class="gtag">5 places</span>
       </div>
-      <a class="pdf-btn" href="guides/bulle-milan-wine-bars.pdf" download>
+      <a class="pdf-btn" href="guide-bulle/bulle-milan-wine-bars.pdf" download>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
         Download PDF
       </a>
@@ -137,66 +173,66 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
       <div class="place fade-up">
         <div class="place-top"><span class="place-num">01</span><div><p class="place-name">Terroir Milano</p><p class="place-zone">Porta Venezia · M4 Dateo</p></div></div>
         <div class="place-divider"></div>
-        <p class="place-tagline">La bottega che ti fa perdere il senso del tempo.</p>
-        <p class="place-body">Non è solo un'enoteca: è una gastronomia gourmet, un luogo dove il confine tra fare la spesa e bersi un calice scompare nel modo più naturale possibile. Aperta nel 2017 da Gabriele Ornati, Terroir raduna una clientela locale e intenditori in cerca di vini naturali da tutta Europa — Georgia, Libano, Austria — insieme a specialty coffee, cioccolato bean-to-bar e prodotti Presidi Slow Food. Il personale conosce ogni etichetta sullo scaffale e sa quando è il momento giusto per raccontartela.</p>
+        <p class="place-tagline">The bottle shop that makes you lose track of time.</p>
+        <p class="place-body">Not just a wine shop — a gourmet deli where the line between doing your shopping and staying for a glass dissolves completely. Opened in 2017 by Gabriele Ornati, Terroir draws locals and serious drinkers in search of natural wines from across Europe — Georgia, Lebanon, Austria — alongside specialty coffee, bean-to-bar chocolate and Slow Food Presidia products. The staff know every label on the shelf and know exactly when to tell you about it.</p>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Macedonio Melloni, 33</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Bottega · Calice</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Lun 15:30–20 · Mar–Ven 11–14 / 15:30–20 · Sab 10:15–19:30</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Macedonio Melloni, 33</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Bottle shop · Glass</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Mon 15:30–20 · Tue–Fri 11–14 / 15:30–20 · Sat 10:15–19:30</p></div>
         </div>
       </div>
 
       <div class="place fade-up">
         <div class="place-top"><span class="place-num">02</span><div><p class="place-name">Atypique</p><p class="place-zone">Moscova · M2</p></div></div>
         <div class="place-divider"></div>
-        <p class="place-tagline">Vino artigianale, cibo buono e musica giusta.</p>
-        <p class="place-body">Aperto nell'ottobre 2023 da Simone Marchiori e Gabriele Natale, Atypique è uno dei locali più interessanti dell'ultima ondata milanese. La carta vini spazia tra piccoli produttori italiani e francesi con bottiglie che non trovi facilmente altrove. Il sommelier sa fare il suo mestiere senza fartelo pesare: due parole e sei guidato verso la bottiglia giusta. Si mangia bene: crostoni, taglieri, smash burger. Atmosfera calda, musica curata.</p>
+        <p class="place-tagline">Artisan wine, good food and the right music.</p>
+        <p class="place-body">Opened in October 2023 by Simone Marchiori and Gabriele Natale, Atypique is one of the most interesting places to emerge from Milan's latest wave. On Via Alessandro Volta, the wine list moves between small Italian and French producers with bottles you won't easily find elsewhere. The sommelier guides you without making you feel guided — two words and you're pointed in the right direction. The food is good: bruschetta, boards, smash burger. Warm atmosphere, considered music.</p>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Alessandro Volta, zona Moscova</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Vineria · Cucina</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Mar–Mer 17:30–23:30 · Gio–Sab 17:30–00 · Dom–Lun chiuso</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Alessandro Volta, Moscova</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine bar · Kitchen</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Tue–Wed 17:30–23:30 · Thu–Sat 17:30–00 · Sun–Mon closed</p></div>
         </div>
       </div>
 
       <div class="place fade-up">
         <div class="place-top"><span class="place-num">03</span><div><p class="place-name">e/n enoteca naturale</p><p class="place-zone">Ticinese · Parco delle Basiliche</p></div></div>
         <div class="place-divider"></div>
-        <p class="place-tagline">Dove il vino diventa posizione etica.</p>
-        <p class="place-body">e/n è nata nel 2018 all'interno di Casa Emergency. Il giardino affacciato sulla Basilica di Sant'Eustorgio è uno degli scorci più belli della città per bersi un calice. La carta vini ruota ogni settimana, con oltre 4.000 etichette passate sugli scaffali nel tempo: produttori artigiani da tutta Europa, selezionati per qualità e impatto positivo sul territorio. Le serate wineroulette con i vignaioli sono tra le migliori della città.</p>
+        <p class="place-tagline">Where wine becomes an ethical position.</p>
+        <p class="place-body">e/n was born in 2018 inside Casa Emergency — the Milanese headquarters of the humanitarian organisation — and carries the full weight of that choice. The garden overlooking the Basilica di Sant'Eustorgio is one of the most beautiful spots in the city for a glass. The wine list rotates weekly, with over 4,000 labels cycled through the shelves over time: artisan producers from across Europe, selected for quality and positive territorial impact. The wineroulette evenings with producers are among the best in the city.</p>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Santa Croce, 19</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Enoteca · Cucina · Giardino</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Lun–Ven 18–23:30 · Sab–Dom 12:30–23:30</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Santa Croce, 19</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine shop · Kitchen · Garden</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Mon–Fri 18–23:30 · Sat–Sun 12:30–23:30</p></div>
         </div>
       </div>
 
       <div class="place fade-up">
         <div class="place-top"><span class="place-num">04</span><div><p class="place-name">Mestè</p><p class="place-zone">Bocconi · Porta Romana</p></div></div>
         <div class="place-divider"></div>
-        <p class="place-tagline">L'osteria che sa fare il suo mestiere — nel senso più milanese del termine.</p>
-        <p class="place-body">Il nome viene dal dialetto milanese: mestè, mestiere. Daniele Santangelo e Marco Bonardi lo sanno fare davvero. La cucina è quella della tradizione lombardo-piemontese, eseguita bene: tonno di coniglio, tortelli piacentini, trippa fritta. I vini, irriverenti e a volte brutali come li definisce lui, sono l'anima del posto. Pochi tavoli, arredamento di legno e mattoni, nessun fronzolo. Diventa presto il locale del cuore.</p>
+        <p class="place-tagline">The osteria that knows its craft — in the most Milanese sense of the word.</p>
+        <p class="place-body">The name comes from Milanese dialect: mestè, trade. And Daniele Santangelo and Marco Bonardi genuinely know theirs. Daniele took the long road — Vinoir, Panificio Longoni, Hic Enoteche, Vineria Eretica — before opening his own place in 2019, in a quiet corner near Bocconi. The kitchen is Lombard-Piedmontese tradition, executed properly: vitello tonnato with rabbit, Piacenza tortelli, fried tripe. The wines — irreverent and sometimes brutal, as he calls them — are the soul of the place. Few tables, wood and brick, no excess. It becomes your local faster than you expect.</p>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Corrado II il Salico, 12</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Osteria · Vino naturale</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Mar–Ven 12–14:30 / 18:30–24 · Sab 18–24 · Lun chiuso</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Corrado II il Salico, 12</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Osteria · Natural wine</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Tue–Fri 12–14:30 / 18:30–24 · Sat 18–24 · Mon closed</p></div>
         </div>
       </div>
 
       <div class="place fade-up">
         <div class="place-top"><span class="place-num">05</span><div><p class="place-name">Temp Enoteca</p><p class="place-zone">Risorgimento · M4 Dateo</p></div></div>
         <div class="place-divider"></div>
-        <p class="place-tagline">Un paesaggio agricolo nel mezzo di Milano.</p>
-        <p class="place-body">Emanuele Romanelli ha aperto Temp nell'ottobre 2022 con un'idea precisa: portare il tempo lento della campagna dentro una città che non si ferma mai. Circa 350 etichette in rotazione, prevalentemente Italia e Francia, tutte da piccoli produttori con cui ha un rapporto diretto. Il vero valore aggiunto è Emanuele stesso, che sa come guidarti senza toglierti il piacere della scoperta.</p>
+        <p class="place-tagline">An agricultural landscape in the middle of Milan.</p>
+        <p class="place-body">Emanuele Romanelli opened Temp in October 2022 after years at Davide Longoni and Flor, with a precise idea: bringing the slow pace of the countryside into a city that never stops. No wine list as such — around 350 labels in rotation, predominantly Italy and France, all from small producers with whom Emanuele has a direct relationship. The real value is Emanuele himself, who knows how to guide you without taking away the pleasure of discovery.</p>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Pasquale Sottocorno, 17</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Enoteca · Atmosfera</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Lun–Sab 18–01 · Dom chiuso</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Pasquale Sottocorno, 17</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine shop · Seasonal</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Mon–Sat 18–01 · Sun closed</p></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- GUIDE 02: UNDERDOGS -->
+  <!-- GUIDE 02 -->
   <div class="guide-panel" id="g2">
     <div class="guide-header fade-up">
       <p class="guide-eyebrow">Underdog wine bar guide · Milan</p>
@@ -207,7 +243,7 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <span class="gtag">off the radar</span>
         <span class="gtag">5 places</span>
       </div>
-      <a class="pdf-btn" href="guides/bulle-underdog-guide.pdf" download>
+      <a class="pdf-btn" href="guide-bulle/bulle-underdog-guide.pdf" download>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
         Download PDF
       </a>
@@ -218,12 +254,12 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <div class="place-top"><span class="place-num">01</span><div><p class="place-name">Canaglia</p><p class="place-zone">Lodi · Southeast Milan</p></div></div>
         <div class="place-divider"></div>
         <p class="place-tagline">A neighbourhood wine bar that doesn't know it's a neighbourhood wine bar.</p>
-        <p class="place-body">Tucked into a small piazza in Lodi — a part of Milan that hasn't bothered to become fashionable — Canaglia feels genuinely removed from the city's noise. You go here to escape, not to be seen. The wine selection is sharper than the address might suggest, the small plates are worth staying for, and the square outside has the kind of unhurried energy that's increasingly rare in this city.</p>
+        <p class="place-body">Tucked into a small piazza in Lodi — a part of Milan that hasn't bothered to become fashionable — Canaglia feels genuinely removed from the city's noise. You go here to escape, not to be seen. The wine selection is sharper than the address might suggest, the small plates are worth staying for, and the square outside has the kind of unhurried energy that's increasingly rare in this city. A place for people who already know where they're going.</p>
         <div class="place-why"><p class="why-label">Why now</p><p class="why-text">Because the best neighbourhood wine bars disappear before anyone writes about them.</p></div>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Zona</p><p class="meta-val">Piazza Martini, Lodi</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Wine bar · Small plates</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Check directly</p></div>
+          <div><p class="meta-label">Area</p><p class="meta-val">Piazza Martini, Lodi</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine bar · Small plates</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Check directly</p></div>
         </div>
       </div>
 
@@ -234,9 +270,9 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <p class="place-body">Lambrate has been on the edge of interesting for a while now, and Ironica Bar is a good reason to finally make the trip. The design is contemporary and considered — the kind of space that photographs well but also functions perfectly — and it sits in productive tension with a menu rooted in southern Italian tradition. The strazzate and the Lucanian dishes are the point. The wine list earns its place alongside them.</p>
         <div class="place-why"><p class="why-label">Why now</p><p class="why-text">Cool design and serious regional cooking rarely coexist this comfortably.</p></div>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Zona</p><p class="meta-val">Lambrate, Milano</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Wine bar · Cucina lucana</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Check directly</p></div>
+          <div><p class="meta-label">Area</p><p class="meta-val">Lambrate, Milan</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine bar · Southern Italian kitchen</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Check directly</p></div>
         </div>
       </div>
 
@@ -244,12 +280,12 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <div class="place-top"><span class="place-num">03</span><div><p class="place-name">Deposito Enoteca</p><p class="place-zone">Porta Venezia</p></div></div>
         <div class="place-divider"></div>
         <p class="place-tagline">The enoteca that never needs to reinvent itself.</p>
-        <p class="place-body">There's a particular kind of Milanese enoteca — warm, unhurried, slightly worn at the edges in the best way — that Deposito has mastered without appearing to try. In Porta Venezia, it holds its ground with a menu that ranges from small plates to proper first courses. The cavallo tonnato is the thing to order. The wine list is broad and honest. It's the kind of place you return to without needing a reason.</p>
+        <p class="place-body">There's a particular kind of Milanese enoteca — warm, unhurried, slightly worn at the edges in the best way — that Deposito has mastered without appearing to try. In Porta Venezia, it holds its ground with a menu that ranges from small plates and antipasti to proper first courses. The cavallo tonnato is the thing to order. The wine list is broad and honest. It's the kind of place you return to without needing a reason.</p>
         <div class="place-why"><p class="why-label">Why now</p><p class="why-text">In a city obsessed with what's new, places that simply keep being good deserve more credit.</p></div>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Zona</p><p class="meta-val">Porta Venezia, Milano</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Enoteca · Cucina</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Check directly</p></div>
+          <div><p class="meta-label">Area</p><p class="meta-val">Porta Venezia, Milan</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine shop · Kitchen</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Check directly</p></div>
         </div>
       </div>
 
@@ -257,12 +293,12 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <div class="place-top"><span class="place-num">04</span><div><p class="place-name">Temp Enoteca</p><p class="place-zone">Risorgimento · M4 Dateo</p></div></div>
         <div class="place-divider"></div>
         <p class="place-tagline">The best glass of wine you'll have this week, in a room nobody is rushing to photograph.</p>
-        <p class="place-body">Temp doesn't chase attention and it shows — in the best way. The labels are genuinely recherché, Emanuele's recommendations make you feel let in on something, and the cheese and charcuterie selection is one of the finest in the city. You come for one glass and leave knowing three more producers by name. It is, as the name suggests, a place that understands time.</p>
+        <p class="place-body">Temp doesn't chase attention and it shows — in the best way. The labels are genuinely recherché, Emanuele's recommendations make you feel let in on something, and the cheese and charcuterie selection is one of the finest in the city. The seasonal food offers are consistently excellent. You come for one glass and leave knowing three more producers by name. It is, as the name suggests, a place that understands time.</p>
         <div class="place-why"><p class="why-label">Why now</p><p class="why-text">No hype. No queue. Just very good wine and the space to actually enjoy it.</p></div>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Via Pasquale Sottocorno, 17</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Enoteca · Stagionale</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Lun–Sab 18–01 · Dom chiuso</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Via Pasquale Sottocorno, 17</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine shop · Seasonal</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Mon–Sat 18–01 · Sun closed</p></div>
         </div>
       </div>
 
@@ -273,16 +309,16 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <p class="place-body">Pavia is thirty-five minutes from Milan and feels like a different world — which is partly the point. Infernot is run with infectious enthusiasm and first-rate ingredients. The natural wine selection covers local territory and further afield with real clarity of vision. The low-temperature salt cod is exceptional. The charcuterie is serious. The chocolate cake, if you stay for dinner, is not optional. There is also an excellent selection for wine-loving vegetarians — rarer than it should be.</p>
         <div class="place-why"><p class="why-label">Why now</p><p class="why-text">The best wine experiences are increasingly found outside the obvious radius.</p></div>
         <div class="place-meta">
-          <div class="meta-col"><p class="meta-label">Indirizzo</p><p class="meta-val">Pavia — 35 min da Milano Centrale</p></div>
-          <div class="meta-col"><p class="meta-label">Categoria</p><p class="meta-val">Enoteca · Cucina · Vino naturale</p></div>
-          <div class="meta-col"><p class="meta-label">Orari</p><p class="meta-val">Book ahead for dinner</p></div>
+          <div><p class="meta-label">Address</p><p class="meta-val">Pavia — 35 min from Milano Centrale</p></div>
+          <div><p class="meta-label">Category</p><p class="meta-val">Wine shop · Kitchen · Natural wine</p></div>
+          <div><p class="meta-label">Hours</p><p class="meta-val">Book ahead for dinner</p></div>
         </div>
       </div>
     </div>
     <p class="guide-closing">"These places won't stay underdogs forever. Go now, while the tables are still easy to get."</p>
   </div>
 
-  <!-- GUIDE 03: NATURAL WINE (placeholder) -->
+  <!-- GUIDE 03 -->
   <div class="guide-panel" id="g3">
     <div class="guide-header fade-up">
       <p class="guide-eyebrow">Natural wine guide · Milan</p>
@@ -294,29 +330,26 @@ body{background:var(--egg);color:var(--mahogany);font-family:var(--ff);font-weig
         <span class="gtag">coming soon</span>
       </div>
     </div>
-    <div style="padding:48px 0;text-align:center;border-top:1px solid var(--b)">
-      <p style="font-family:var(--ffm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:12px">In preparation</p>
-      <p style="font-size:15px;color:var(--tm);max-width:420px;margin:0 auto;line-height:1.7">This guide is being curated. Subscribers will be notified as soon as it's ready.</p>
+    <div class="coming-soon">
+      <p class="cs-label">In preparation</p>
+      <p class="cs-text">This guide is being curated. Subscribers will be notified as soon as it's ready.</p>
     </div>
   </div>
 
 </div>
 
+<footer>
+  <span class="foot-brand">Bulle</span>
+  <span class="foot-right">bulle.studio</span>
+</footer>
+
 <script>
-function showGuide(id) {
-  document.querySelectorAll('.guide-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.gnav-btn').forEach(b => b.classList.remove('active'));
+function showGuide(id, btn) {
+  document.querySelectorAll('.guide-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.gnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-  window.scrollTo({top: document.querySelector('.guide-nav').offsetTop - 60, behavior: 'smooth'});
-  document.querySelectorAll('#' + id + ' .fade-up').forEach((el, i) => {
-    el.style.animationDelay = (i * 0.05) + 's';
-    el.style.opacity = '0';
-    void el.offsetWidth;
-    el.style.animation = 'none';
-    void el.offsetWidth;
-    el.style.animation = '';
-  });
+  btn.classList.add('active');
+  window.scrollTo({top:document.querySelector('.guide-nav').offsetTop - 60, behavior:'smooth'});
 }
 </script>
 </body>
