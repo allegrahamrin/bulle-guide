@@ -367,7 +367,56 @@ nav {
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWxsZWdyYWhhbXJpbiIsImEiOiJjbW9rMDRhcWMwMzhjMnRzYWswdTM3djN5In0.kdAqX0x2m3f5qbwxbkU6YQ';
 
 // ── DATA ───────────────────────────────────────────────────────────────────
-const PLACES = [
+// ── GOOGLE SHEETS CSV SOURCE ───────────────────────────────────────────────
+const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTASTdqwdeXjvSsj2b_x6x2ric9221HkRhUviDTtr1cux0k4Fy_2rLIoOfrFLbwh8WCYwGxlqwjEzaY/pub?output=csv';
+
+const CAT_MAP = {
+  'Wine bars worth your evening':           { key: 'worth',  label: 'Worth your evening' },
+  "Wine bars you're not talking about yet": { key: 'hidden', label: 'Not talking about yet' },
+};
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; continue; }
+      if (c === ',' && !inQ) { cols.push(cur); cur = ''; continue; }
+      cur += c;
+    }
+    cols.push(cur);
+    const row = {};
+    headers.forEach((h, i) => row[h] = (cols[i] || '').trim());
+    return row;
+  }).filter(r => r.name && r.lat && r.lng && !isNaN(parseFloat(r.lat)));
+}
+
+function rowToPlace(row, idx) {
+  const catInfo = CAT_MAP[row.category] || { key: 'worth', label: row.category };
+  const subcats = row.subcategory ? row.subcategory.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const lat = parseFloat(row.lat), lng = parseFloat(row.lng);
+  const outside_milan = lat < 45.38 || lat > 45.55 || lng < 9.05 || lng > 9.35;
+  return {
+    id: `place-${idx}`,
+    name: row.name, category: row.category,
+    cat_key: catInfo.key, cat_label: catInfo.label,
+    subcategory: subcats, area: row.area || '',
+    address: row.address || '', why: row.why || '',
+    headline: row.headline || '', description: row.description || '',
+    lat, lng, outside_milan,
+  };
+}
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let PLACES = [];
+let activeFilter = 'all';
+let activePlaceId = null;
+let markers = {};
+
+// PLACEHOLDER — replaced by CSV fetch
+const _PLACES_PLACEHOLDER = [
   {
     id: 'terroir',
     name: 'Terroir Milano',
@@ -487,11 +536,6 @@ const PLACES = [
   },
 ];
 
-// ── STATE ──────────────────────────────────────────────────────────────────
-let activeFilter = 'all';
-let activePlaceId = null;
-let markers = {};
-
 // ── MAP INIT ───────────────────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
@@ -503,14 +547,34 @@ const map = new mapboxgl.Map({
 
 map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-left');
 
-map.on('load', () => {
-  // Custom map style tweaks
-  map.setPaintProperty('background', 'background-color', '#1a0f0f');
+// Load CSV then init map
+async function loadAndInit() {
+  try {
+    const res  = await fetch(SHEET_CSV);
+    const text = await res.text();
+    PLACES = parseCSV(text).map(rowToPlace);
+  } catch(e) {
+    console.warn('CSV fetch failed, using fallback data', e);
+    PLACES = _PLACES_PLACEHOLDER;
+  }
 
-  initMarkers();
-  renderList();
-  buildCatTabs();
-});
+  map.on('load', () => {
+    map.setPaintProperty('background', 'background-color', '#1a0f0f');
+    initMarkers();
+    renderList();
+    buildCatTabs();
+  });
+
+  // If map already loaded (fast connection)
+  if (map.loaded()) {
+    map.setPaintProperty('background', 'background-color', '#1a0f0f');
+    initMarkers();
+    renderList();
+    buildCatTabs();
+  }
+}
+
+loadAndInit();
 
 // ── MARKERS ────────────────────────────────────────────────────────────────
 function initMarkers() {
