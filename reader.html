@@ -362,155 +362,128 @@ nav {
 </div>
 
 <script>
-// ── TOKEN ──────────────────────────────────────────────────────────────────
-// Replace with your Mapbox public token
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWxsZWdyYWhhbXJpbiIsImEiOiJjbW9rMDRhcWMwMzhjMnRzYWswdTM3djN5In0.kdAqX0x2m3f5qbwxbkU6YQ';
 
-// ── DATA ───────────────────────────────────────────────────────────────────
-const PLACES = [
-  {
-    id: 'terroir',
-    name: 'Terroir Milano',
-    category: 'Wine bars worth your evening',
-    cat_key: 'worth',
-    subcategory: ['Bottle shop', 'Glass'],
-    area: 'Porta Venezia',
-    address: 'Via Macedonio Melloni, 33',
-    headline: 'The bottle shop that makes you lose track of time.',
-    description: 'Not just a wine shop — a gourmet deli where the line between doing your shopping and staying for a glass dissolves completely. Opened in 2017 by Gabriele Ornati, Terroir draws locals and serious drinkers in search of natural wines from across Europe — Georgia, Lebanon, Austria — alongside specialty coffee, bean-to-bar chocolate and Slow Food Presidia products. The staff know every label on the shelf and know exactly when to tell you about it.',
-    lat: 45.4654, lng: 9.2156,
-    outside_milan: false,
-  },
-  {
-    id: 'atypique',
-    name: 'Atypique',
-    category: 'Wine bars worth your evening',
-    cat_key: 'worth',
-    subcategory: ['Wine bar', 'Kitchen'],
-    area: 'Moscova',
-    address: 'Via Alessandro Volta, Moscova',
-    headline: 'Artisan wine, good food and the right music.',
-    description: 'Opened in October 2023 by Simone Marchiori and Gabriele Natale, Atypique is one of the most interesting places to emerge from Milan\'s latest wave. On Via Alessandro Volta, the wine list moves between small Italian and French producers with bottles you won\'t easily find elsewhere. The sommelier guides you without making you feel guided — two words and you\'re pointed in the right direction. The food is good: bruschetta, boards, smash burger. Warm atmosphere, considered music.',
-    lat: 45.4791, lng: 9.1887,
-    outside_milan: false,
-  },
-  {
-    id: 'en',
-    name: 'e/n enoteca naturale',
-    category: 'Wine bars worth your evening',
-    cat_key: 'worth',
-    subcategory: ['Kitchen', 'Bottle shop'],
-    area: 'Ticinese',
-    address: 'Via Santa Croce, 19',
-    headline: 'Where wine becomes an ethical position.',
-    description: 'e/n was born in 2018 inside Casa Emergency — the Milanese headquarters of the humanitarian organisation — and carries the full weight of that choice. The garden overlooking the Basilica di Sant\'Eustorgio is one of the most beautiful spots in the city for a glass. The wine list rotates weekly, with over 4,000 labels cycled through the shelves over time: artisan producers from across Europe, selected for quality and positive territorial impact.',
-    lat: 45.4558, lng: 9.1832,
-    outside_milan: false,
-  },
-  {
-    id: 'meste',
-    name: 'Mestè',
-    category: 'Wine bars worth your evening',
-    cat_key: 'worth',
-    subcategory: ['Kitchen', 'Bottle shop', 'Natural wine'],
-    area: 'Bocconi · Porta Romana',
-    address: 'Via Corrado II il Salico, 12',
-    headline: 'The osteria that knows its craft — in the most Milanese sense of the word.',
-    description: 'The name comes from Milanese dialect: mestè, trade. And Daniele Santangelo and Marco Bonardi genuinely know theirs. The kitchen is Lombard-Piedmontese tradition, executed properly: vitello tonnato with rabbit, Piacenza tortelli, fried tripe. The wines — irreverent and sometimes brutal, as he calls them — are the soul of the place. Few tables, wood and brick, no excess. It becomes your local faster than you expect.',
-    lat: 45.4488, lng: 9.2012,
-    outside_milan: false,
-  },
-  {
-    id: 'temp',
-    name: 'Temp Enoteca',
-    category: 'Wine bars worth your evening',
-    cat_key: 'worth',
-    subcategory: ['Wine bar', 'Bottle shop'],
-    area: 'Risorgimento',
-    address: 'Via Pasquale Sottocorno, 17',
-    headline: 'An agricultural landscape in the middle of Milan.',
-    description: 'Emanuele Romanelli opened Temp in October 2022 after years at Davide Longoni and Flor, with a precise idea: bringing the slow pace of the countryside into a city that never stops. No wine list as such — around 350 labels in rotation, predominantly Italy and France, all from small producers with whom Emanuele has a direct relationship. The real value is Emanuele himself, who knows how to guide you without taking away the pleasure of discovery.',
-    lat: 45.4662, lng: 9.2187,
-    outside_milan: false,
-  },
-  {
-    id: 'canaglia',
-    name: 'Canaglia',
-    category: 'Wine bars you\'re not talking about yet',
-    cat_key: 'hidden',
-    subcategory: ['Wine bar', 'Kitchen'],
-    area: 'Lodi · Southeast Milan',
-    address: 'Piazza Martini, Lodi',
-    headline: 'A neighbourhood wine bar that doesn\'t know it\'s a neighbourhood wine bar.',
-    description: 'Tucked into a small piazza in Lodi — a part of Milan that hasn\'t bothered to become fashionable — Canaglia feels genuinely removed from the city\'s noise. You go here to escape, not to be seen. The wine selection is sharper than the address might suggest, the small plates are worth staying for, and the square outside has the kind of unhurried energy that\'s increasingly rare in this city.',
-    lat: 45.3481, lng: 9.3481,
-    outside_milan: false,
-  },
-  {
-    id: 'ironica',
-    name: 'Ironica Bar',
-    category: 'Wine bars you\'re not talking about yet',
-    cat_key: 'hidden',
-    subcategory: ['Wine bar', 'Kitchen'],
-    area: 'Lambrate',
-    address: 'Via Carlo Valvassori Peroni, 83',
-    headline: 'Lucanian soul in a room that looks like a design studio.',
-    description: 'Lambrate has been on the edge of interesting for a while now, and Ironica Bar is a good reason to finally make the trip. The design is contemporary and considered — the kind of space that photographs well but also functions perfectly — and it sits in productive tension with a menu rooted in southern Italian tradition. The strazzate and the Lucanian dishes are the point. The wine list earns its place alongside them.',
-    lat: 45.4731, lng: 9.2441,
-    outside_milan: false,
-  },
-  {
-    id: 'deposito',
-    name: 'Deposito Enoteca',
-    category: 'Wine bars you\'re not talking about yet',
-    cat_key: 'hidden',
-    subcategory: ['Wine bar', 'Kitchen', 'Bottle shop'],
-    area: 'Porta Venezia',
-    address: 'Via Felice Casati, 1',
-    headline: 'The enoteca that never needs to reinvent itself.',
-    description: 'There\'s a particular kind of Milanese enoteca — warm, unhurried, slightly worn at the edges in the best way — that Deposito has mastered without appearing to try. In Porta Venezia, it holds its ground with a menu that ranges from small plates and antipasti to proper first courses. The cavallo tonnato is the thing to order. The wine list is broad and honest.',
-    lat: 45.4711, lng: 9.2089,
-    outside_milan: false,
-  },
-  {
-    id: 'infernot',
-    name: 'Infernot',
-    category: 'Wine bars you\'re not talking about yet',
-    cat_key: 'hidden',
-    subcategory: ['Wine bar', 'Bottle shop', 'Kitchen'],
-    area: 'Pavia · 35 min from Milan',
-    address: 'Pavia',
-    headline: 'Worth leaving the city for. Actually worth it.',
-    description: 'Pavia is thirty-five minutes from Milan and feels like a different world — which is partly the point. Infernot is run with infectious enthusiasm and first-rate ingredients. The natural wine selection covers local territory and further afield with real clarity of vision. The low-temperature salt cod is exceptional. The charcuterie is serious. The chocolate cake, if you stay for dinner, is not optional.',
-    lat: 45.1847, lng: 9.1582,
-    outside_milan: true,
-  },
-];
+// ── GOOGLE SHEETS CSV ──────────────────────────────────────────────────────
+const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTASTdqwdeXjvSsj2b_x6x2ric9221HkRhUviDTtr1cux0k4Fy_2rLIoOfrFLbwh8WCYwGxlqwjEzaY/pub?output=csv';
+
+const CAT_MAP = {
+  'Wine bars worth your evening':           { key: 'worth',  label: 'Worth your evening' },
+  "Wine bars you're not talking about yet": { key: 'hidden', label: 'Not talking about yet' },
+};
+
+// Correct coordinates for all places (sheet coords are malformed)
+const COORD_FIX = {
+  'Terroir Milano':              { lat: 45.4654, lng: 9.2156 },
+  'Atypique':                    { lat: 45.4791, lng: 9.1887 },
+  'e/n enoteca naturale':        { lat: 45.4558, lng: 9.1832 },
+  'Mestè':                       { lat: 45.4488, lng: 9.2012 },
+  'Temp Enoteca':                { lat: 45.4662, lng: 9.2187 },
+  'Canaglia':                    { lat: 45.3081, lng: 9.5037 },
+  'Ironica Bar':                 { lat: 45.4731, lng: 9.2441 },
+  'Deposito Enoteca':            { lat: 45.4711, lng: 9.2089 },
+  'Infernot':                    { lat: 45.1847, lng: 9.1582 },
+  'Santabarbara Desco & Cucina': { lat: 43.7873, lng: 11.2639 },
+  'Enoteca Spontanea':           { lat: 43.7657, lng: 11.2483 },
+  'RAARO Sips & Bites':          { lat: 43.7842, lng: 11.2786 },
+  'Enoteca Pitti Gola e Cantina':{ lat: 43.7662, lng: 11.2500 },
+  'Caffè Desiderio':             { lat: 43.7832, lng: 11.3218 },
+  'Tomkat':                      { lat: 43.8439, lng: 10.5032 },
+  'Santa Goccia':                { lat: 43.8452, lng: 10.5038 },
+  'La Bottega del Nebraska':     { lat: 43.8847, lng: 10.2429 },
+  'Coci Vini e Fornelli':        { lat: 43.8664, lng: 10.2486 },
+  'Vino Vero':                   { lat: 45.4442, lng: 12.3330 },
+};
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; continue; }
+      if (c === ',' && !inQ) { cols.push(cur); cur = ''; continue; }
+      cur += c;
+    }
+    cols.push(cur);
+    const row = {};
+    headers.forEach((h, i) => row[h] = (cols[i] || '').trim());
+    return row;
+  }).filter(r => r.name);
+}
+
+function rowToPlace(row, idx) {
+  const catInfo = CAT_MAP[row.category] || { key: 'worth', label: row.category };
+  const subcats = row.subcategory ? row.subcategory.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+  // Use coord fix table — fallback to sheet values if valid
+  let lat, lng;
+  if (COORD_FIX[row.name]) {
+    lat = COORD_FIX[row.name].lat;
+    lng = COORD_FIX[row.name].lng;
+  } else {
+    lat = parseFloat(row.lat);
+    lng = parseFloat(row.lng);
+  }
+
+  if (!lat || !lng || lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
+
+  const city = (row.city || 'Milan').trim();
+  const outside_milan = city.toLowerCase() !== 'milan';
+
+  return {
+    id: `place-${idx}`,
+    name: row.name,
+    category: row.category,
+    cat_key: catInfo.key,
+    cat_label: catInfo.label,
+    subcategory: subcats,
+    city,
+    area: row.area || '',
+    address: row.address || '',
+    why: row.why || '',
+    headline: row.headline || '',
+    description: row.description || '',
+    lat, lng,
+    outside_milan,
+  };
+}
 
 // ── STATE ──────────────────────────────────────────────────────────────────
+let PLACES = [];
 let activeFilter = 'all';
 let activePlaceId = null;
 let markers = {};
 
-// ── MAP INIT ───────────────────────────────────────────────────────────────
+// ── MAP ────────────────────────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/dark-v11',
   center: [9.1900, 45.4654],
-  zoom: 12.5,
+  zoom: 5.5,
   attributionControl: false,
 });
-
 map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-left');
 
-map.on('load', () => {
-  // Custom map style tweaks
-  map.setPaintProperty('background', 'background-color', '#1a0f0f');
+// ── INIT ───────────────────────────────────────────────────────────────────
+async function loadAndInit() {
+  try {
+    const res  = await fetch(SHEET_CSV);
+    const text = await res.text();
+    PLACES = parseCSV(text).map(rowToPlace).filter(Boolean);
+    console.log(`Loaded ${PLACES.length} places from Sheets`);
+  } catch(e) {
+    console.warn('CSV fetch failed:', e.message);
+    PLACES = [];
+  }
 
-  initMarkers();
-  renderList();
-  buildCatTabs();
-});
+  if (map.loaded()) {
+    initMarkers(); renderList(); buildCatTabs();
+  } else {
+    map.on('load', () => { initMarkers(); renderList(); buildCatTabs(); });
+  }
+}
 
 // ── MARKERS ────────────────────────────────────────────────────────────────
 function initMarkers() {
@@ -520,7 +493,7 @@ function initMarkers() {
     el.dataset.id = place.id;
 
     const popup = new mapboxgl.Popup({ offset: 12, closeButton: false, closeOnClick: false })
-      .setHTML(`<div class="popup-name">${place.name}</div><div class="popup-area">${place.area}</div>`);
+      .setHTML(`<div class="popup-name">${place.name}</div><div class="popup-area">${place.area || place.city}</div>`);
 
     const marker = new mapboxgl.Marker(el)
       .setLngLat([place.lng, place.lat])
@@ -540,13 +513,11 @@ function buildCatTabs() {
   const subcats = [...new Set(PLACES.flatMap(p => p.subcategory))].sort();
   const container = document.getElementById('catTabs');
   container.innerHTML = '';
-
   const allBtn = document.createElement('button');
   allBtn.className = 'cat-tab active';
   allBtn.textContent = 'All types';
   allBtn.onclick = () => filterSubcat(null, allBtn);
   container.appendChild(allBtn);
-
   subcats.forEach(sc => {
     const btn = document.createElement('button');
     btn.className = 'cat-tab';
@@ -561,18 +532,15 @@ function filterSubcat(sc, btn) {
   activeSubcat = sc;
   document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderList();
-  updateMarkerVisibility();
+  renderList(); updateMarkerVisibility();
 }
 
-// ── FILTER ─────────────────────────────────────────────────────────────────
+// ── FILTERS ────────────────────────────────────────────────────────────────
 function filterCategory(key, btn) {
   activeFilter = key;
   document.querySelectorAll('.nav-filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  closeDetail();
-  renderList();
-  updateMarkerVisibility();
+  closeDetail(); renderList(); updateMarkerVisibility();
 }
 
 function getFiltered() {
@@ -591,15 +559,13 @@ function updateMarkerVisibility() {
   });
 }
 
-// ── LIST RENDER ────────────────────────────────────────────────────────────
+// ── LIST ───────────────────────────────────────────────────────────────────
 function renderList() {
   const filtered = getFiltered();
-  const list = document.getElementById('placeList');
   document.getElementById('placeCount').textContent = `${filtered.length} address${filtered.length !== 1 ? 'es' : ''}`;
-
-  list.innerHTML = filtered.map(p => `
+  document.getElementById('placeList').innerHTML = filtered.map(p => `
     <div class="place-item ${activePlaceId === p.id ? 'active' : ''}" onclick="selectPlace('${p.id}')">
-      <span class="place-cat-tag">${p.cat_key === 'worth' ? 'Worth your evening' : 'Not talking about yet'}${p.outside_milan ? ' · Outside Milan' : ''}</span>
+      <span class="place-cat-tag">${p.cat_label || p.category} · ${p.city}</span>
       <div class="place-name">${p.name}</div>
       <div class="place-headline">${p.headline}</div>
       <div class="place-tags">${p.subcategory.map(s => `<span class="place-tag">${s}</span>`).join('')}</div>
@@ -607,65 +573,42 @@ function renderList() {
   `).join('');
 }
 
-// ── SELECT PLACE ───────────────────────────────────────────────────────────
+// ── SELECT ─────────────────────────────────────────────────────────────────
 function selectPlace(id) {
   const place = PLACES.find(p => p.id === id);
   if (!place) return;
-
-  // deselect previous
-  if (activePlaceId && markers[activePlaceId]) {
-    markers[activePlaceId].el.classList.remove('active');
-  }
-
+  if (activePlaceId && markers[activePlaceId]) markers[activePlaceId].el.classList.remove('active');
   activePlaceId = id;
   markers[id].el.classList.add('active');
-
-  // fly to
-  map.flyTo({
-    center: [place.lng, place.lat],
-    zoom: place.outside_milan ? 13 : 14.5,
-    duration: 900,
-    essential: true
-  });
-
-  // update list highlight
+  map.flyTo({ center: [place.lng, place.lat], zoom: 14.5, duration: 900 });
   document.querySelectorAll('.place-item').forEach((el, i) => {
-    const filtered = getFiltered();
-    el.classList.toggle('active', filtered[i]?.id === id);
+    el.classList.toggle('active', getFiltered()[i]?.id === id);
   });
-
-  // scroll list item into view
+  const idx = getFiltered().findIndex(p => p.id === id);
   const items = document.querySelectorAll('.place-item');
-  const filtered = getFiltered();
-  const idx = filtered.findIndex(p => p.id === id);
-  if (idx >= 0 && items[idx]) {
-    items[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // show detail
+  if (idx >= 0 && items[idx]) items[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   openDetail(place);
 }
 
-// ── DETAIL CARD ────────────────────────────────────────────────────────────
+// ── DETAIL ─────────────────────────────────────────────────────────────────
 function openDetail(place) {
-  document.getElementById('dEyebrow').textContent = place.area;
+  document.getElementById('dEyebrow').textContent = `${place.city} · ${place.area}`;
   document.getElementById('dName').textContent = place.name;
   document.getElementById('dHeadline').textContent = place.headline;
   document.getElementById('dDesc').textContent = place.description;
   document.getElementById('dAddressText').textContent = place.address;
-  document.getElementById('dTags').innerHTML = place.subcategory
-    .map(s => `<span class="detail-tag">${s}</span>`).join('');
+  document.getElementById('dTags').innerHTML = place.subcategory.map(s => `<span class="detail-tag">${s}</span>`).join('');
   document.getElementById('detailCard').classList.add('open');
 }
 
 function closeDetail() {
   document.getElementById('detailCard').classList.remove('open');
-  if (activePlaceId && markers[activePlaceId]) {
-    markers[activePlaceId].el.classList.remove('active');
-  }
+  if (activePlaceId && markers[activePlaceId]) markers[activePlaceId].el.classList.remove('active');
   activePlaceId = null;
   document.querySelectorAll('.place-item').forEach(el => el.classList.remove('active'));
 }
+
+loadAndInit();
 </script>
 </body>
 </html>
