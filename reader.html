@@ -84,6 +84,11 @@ nav {
 #map {
   flex: 1;
   height: 100%;
+  position: relative;
+  z-index: 1;
+}
+#map canvas {
+  pointer-events: auto !important;
 }
 
 /* ── SIDE PANEL ── */
@@ -96,6 +101,7 @@ nav {
   flex-shrink: 0;
   position: relative;
   z-index: 10;
+  pointer-events: auto;
 }
 
 .panel-header {
